@@ -1,0 +1,80 @@
+﻿@model int
+@inject WebApplication1.Interface.ISanPhamService SanPhamservice;
+@inject WebApplication1.Interface.ITheLoaiService TheLoaiService;
+@using WebApplication1.Entites;
+
+@section header{
+   Danh sách sản phẩm
+}
+
+@if (SanPhamservice.SanPhamTheoID(Model) == null)
+{
+    <div class="single-product-area">
+        <div class="container">
+            <div class="col-md-8">
+                <h2 class="text-danger">Không tồn tại sản phẩm</h2>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="single-product-area">
+        <div class="container">
+            <div class="row">
+                @{ SanPham sp = SanPhamservice.SanPhamTheoID(Model);
+                LoaiGiay loaisp = TheLoaiService.LaytheoID(sp.Loai.Value);}
+                <div class="col-md-8">
+                    <div class="product-content-right">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="product-images">
+                                    <div class="product-main-img">
+                                        <img  style="max-width:100%;height:auto" src="@Url.Content("~/images/" + sp.HinhAnh)" alt="">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="product-inner">
+                                    <h2 class="product-name">@sp.TenSanPham</h2>
+                                    <div class="product-inner-price">
+                                        <span>@String.Format("{0:0,0}", sp.Gia) VNĐ</span>
+                                    </div>
+
+                                    
+
+                                    <div class="product-inner-category">
+                                        <p>Loại giày:@loaisp.TenLoai</p>
+                                    </div>
+
+                                    <div>
+
+                                        <div>
+                                            <div class="tab-pane fade in active">
+                                                <h2>Giới thiệu</h2>
+                                                <p>@sp.MoTa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+
+                                        <div>
+                                            <div class="tab-pane fade in active">
+                                               
+                                                <a asp-action="Index" asp-controller="Home" asp-area="Admin">Quay về danh sách</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    }

@@ -1,0 +1,122 @@
+﻿@inject WebApplication1.Interface.IDonHangService DonHangService
+@model int
+@using Microsoft.AspNetCore.Http;
+@using WebApplication1.Entites;
+@using Newtonsoft.Json;
+
+@{ 
+    var listDonHang = DonHangService.DonHangKhachHang(Model);
+    var sessionTaiKhoan = Context.Session.GetString("taikhoan");
+<div class="single-product-area">
+    @if (sessionTaiKhoan == null)
+    {
+        <div class="woocommerce-info">
+            Bạn chưa đăng nhập ? <a class="showlogin" style="cursor:pointer" data-toggle="modal" data-target="#myModalDN">Click vào đây để đăng nhập</a>
+        </div>
+                                    <div class="modal fade" id="myModalDN" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Đăng nhập</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="login-form-wrap" class="login">
+                                                        <p class="form-row form-row-first">
+                                                            <label for="username">
+                                                                Tên đăng nhập <span class="required">*</span>
+                                                            </label>
+                                                            <input type="text" id="usernameLog" name="username" class="input-text">
+                                                        </p>
+                                                        <p class="form-row form-row-last">
+                                                            <label for="password">
+                                                                Mật khẩu <span class="required">*</span>
+                                                            </label>
+                                                            <input type="password" id="passwordLog" name="password" class="input-text">
+                                                        </p>
+                                                        <div class="clear"></div>
+
+                                                        <p class="form-row">
+                                                            <input type="button" value="Đăng nhập" name="login" class="button" id="btnDangnhap">
+
+                                                        </p>
+
+                                                        <div class="clear"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+    }
+    else if (listDonHang.Count == 0)
+    {
+    <div class="container">
+        <div class="col-md-8">
+            <h2 class="text-danger">Bạn không có đơn hàng</h2>
+        </div>   
+    </div>
+    }
+    else
+    {
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <h2 class="sidebar-title">Các đơn hàng của bạn</h2>
+                        <form method="post">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+
+                                        <th class="product-name">Người nhận</th>
+                                        <th class="product-price">Địa chỉ giao</th>
+                                        <th class="product-subtotal">Ngày giao</th>
+                                        <th class="product-subtotal">Tổng tiền</th>
+                                        <th class="product-subtotal">Trạng thái</th>
+                                        <th class="product-remove">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in listDonHang)
+                                    {
+                                    <tr class="cart_item">
+
+                                        <td class="product-price">
+                                            <span>@item.NguoiNhan</span>
+                                        </td>
+                                        <td class="product-price">
+                                            <span>@item.DiaChi</span>
+                                        </td>
+                                        <td class="product-price">
+                                            <span>@String.Format("{0:dd/MM/yyyy}",item.NgayGiao)</span>
+                                        </td>
+                                        <td class="product-subtotal">
+                                            <span class="amount">@String.Format("{0:0,0}", item.TongTien) VNĐ</span>
+                                        </td>
+                                        <td class="product-price">
+                                            <span>@((item.TrangThai==true)? "Đã xử lý" : "Chưa xử lý")</span>
+                                        </td>
+                                        <td class="product-remove">
+                                            <a asp-action="ChiTietDonHang" asp-controller="DonHang" asp-route-idDonHang="@item.Id" class="btn btn-success"  style="cursor:pointer">Chi tiết đơn hàng</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+    }

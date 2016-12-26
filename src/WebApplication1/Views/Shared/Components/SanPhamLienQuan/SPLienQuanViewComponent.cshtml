@@ -1,0 +1,21 @@
+﻿@model int
+@inject WebApplication1.Interface.ISanPhamService SanPhamService
+
+<div class="col-md-4">
+
+    <div class="single-sidebar">
+        <h2 class="sidebar-title">Sản phẩm liên quan</h2>
+        @foreach (var item in SanPhamService.SPLienQuanPartial(Model))
+        {
+        <div class="thubmnail-recent">
+            <img src="@Url.Content("~/images/"+item.HinhAnh)" class="recent-thumb" alt="">
+            <h2><a asp-action="ChiTietSanPham" asp-controller="SanPham" asp-route-id="@item.Id">@item.TenSanPham</a></h2>
+            <div class="product-sidebar-price">
+                <ins>@String.Format("{0:0,0}", item.Gia) VNĐ</ins>
+            </div>
+        </div>
+        }
+    </div>
+
+
+</div>

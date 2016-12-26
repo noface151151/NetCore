@@ -1,0 +1,11 @@
+﻿@inject WebApplication1.Interface.ITheLoaiService TheLoaiService
+
+<ul id="submenu1" class="nav">
+    @foreach(var item in TheLoaiService.DanhSachLoaiSP())
+    {
+        <li>
+            <a asp-action="SanPhamTheoLoai" asp-controller="SanPham" asp-route-id="@item.Id">@item.TenLoai</a>
+        </li>
+
+    }
+</ul>

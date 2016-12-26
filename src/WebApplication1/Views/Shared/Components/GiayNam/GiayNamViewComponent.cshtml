@@ -1,0 +1,27 @@
+﻿@inject WebApplication1.Interface.ISanPhamService SanPhamService
+
+
+
+                <div class="latest-product">
+                    <h2 class="section-title text-center">Giày Nam bán chạy</h2>
+                    <div class="product-carousel">
+                        @foreach (var item in SanPhamService.GiayNamPartial())
+                        {
+                        <div class="single-product">
+                            <div class="product-f-image">
+                                <img src="@Url.Content("~/images/"+item.HinhAnh)" alt="" />
+                                <div class="product-hover">
+                                    <a asp-action="Themgiohang" asp-controller="GioHang" asp-route-idSP="@item.Id" asp-route-url="@Context.Request.Path.ToString()" style="cursor:pointer" class="add-to-cart-link" id="btnAddCart" data-id="@item.Id"><i class="fa fa-shopping-cart"></i> Mua hàng</a>
+                                   <a asp-action="ChiTietSanPham" asp-controller="SanPham" asp-route-id="@item.Id" class="view-details-link"><i class="fa fa-link"></i> Chi tiết</a>
+                                </div>
+                            </div>
+
+                            <h2><a href="single-product.html">@item.TenSanPham</a></h2>
+
+                            <div class="product-carousel-price">
+                                <ins>@String.Format("{0:0,0}", item.Gia) VNĐ</ins>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>

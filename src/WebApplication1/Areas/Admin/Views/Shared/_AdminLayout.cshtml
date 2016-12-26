@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Trang quản lý của Admin</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/bootstrap.min.css" rel="stylesheet" />
+    <!-- MetisMenu CSS -->
+    <link href="~/css/metisMenu.min.css" rel="stylesheet" />
+    <!-- DataTables CSS -->
+    <link href="~/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <!-- DataTables Responsive CSS -->
+    <link href="~/css/dataTables.responsive.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="~/css/sb-admin-2.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="~/font-awesome-4.6.3/css/font-awesome.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Trang quản lý shop bán giày</span>
+            </div>
+            <!-- /.navbar-header -->
+
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+
+                        <li>
+                            <a asp-controller="Home" asp-action="Index" asp-area="Admin"><i class="fa fa-book" aria-hidden="true"></i> Quản lý Sản phẩm</a>
+                        </li>
+                        <li>
+                            <a asp-controller="LoaiSanPham" asp-action="Index" asp-area="Admin"><i class="fa fa-edit fa-fw"></i> Quản lý thể loại</a>
+                        </li>
+                        <li>
+                            <a  asp-controller="DonHang" asp-action="Index" asp-area="Admin"><i class="fa fa-ship" aria-hidden="true"></i> Quản lý đơn hàng</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">@RenderSection("header", required: false)</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                @RenderBody()
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="~/Script/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Script/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/Script/metisMenu.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="~/Script/jquery.dataTables.min.js"></script>
+    <script src="~/Script/dataTables.bootstrap.min.js"></script>
+    <script src="~/Script/dataTables.responsive.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Script/sb-admin-2.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#dataTables-examplex').DataTable({
+            "aLengthMenu":[5,10,15],
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ sản phẩm mỗi trang",
+                "info": "Hiển thị trang _PAGE_ của tất cả _PAGES_ trang",
+                "decimal": ",",
+                "thousands": ".",
+                "search": "Tìm kiếm nhanh:",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp theo",
+                    "previous": "Trang trước"
+                }
+            },
+                "columnDefs": [
+                     {
+                         "orderable": false, "targets": 3
+                     },
+                      {
+                          "orderable": false, "targets": 5
+                      }
+
+                ],
+
+                responsive: true,
+
+        });
+        $('#dataTablesTheLoai').DataTable({
+            "aLengthMenu": [5, 10, 15],
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ thể loại mỗi trang",
+                "info": "Hiển thị trang _PAGE_ của tất cả _PAGES_ trang",
+                "decimal": ",",
+                "thousands": ".",
+                "search": "Tìm kiếm nhanh:",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp theo",
+                    "previous": "Trang trước"
+                }
+            },
+            "columnDefs": [
+                 {
+                     "orderable": false, "targets": 2
+                 }
+
+            ],
+
+            responsive: true,
+
+        });
+        $('#dataTablesDonHang').DataTable({
+            "aLengthMenu": [5, 10, 15],
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ đơn hàng mỗi trang",
+                "info": "Hiển thị trang _PAGE_ của tất cả _PAGES_ trang",
+                "decimal": ",",
+                "thousands": ".",
+                "search": "Tìm kiếm nhanh:",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp theo",
+                    "previous": "Trang trước"
+                }
+            },
+            "columnDefs": [
+                 {
+                      "orderable": false, "targets": 3
+                 },
+                  {
+                      "orderable": false, "targets": 2
+                  },
+                   {
+                       "orderable": false, "targets": 0
+                   },
+                   {
+                       "orderable": false, "targets": 6
+                   },
+                   {
+                       "orderable": false, "targets": 1
+                   }
+
+            ],
+
+            responsive: true,
+
+        });
+        $('#dataTablesCTDonHang').DataTable({
+            "aLengthMenu": [5, 10, 15],
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục mỗi trang",
+                "info": "Hiển thị trang _PAGE_ của tất cả _PAGES_ trang",
+                "decimal": ",",
+                "thousands": ".",
+                "search": "Tìm kiếm nhanh:",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp theo",
+                    "previous": "Trang trước"
+                }
+            },
+            "columnDefs": [
+                 {
+                     "orderable": false, "targets": 0
+                 },
+                  {
+                      "orderable": false, "targets": 1
+                  },
+                   {
+                       "orderable": false, "targets": 2
+                   }, {
+                       "orderable": false, "targets": 3
+                   },
+                   {
+                       "orderable": false, "targets": 4
+                   }
+
+            ],
+
+            responsive: true,
+
+        });
+
+    });
+    </script>
+    @RenderSection("jsFooter", required: false)
+</body>
+</html>

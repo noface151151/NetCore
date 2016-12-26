@@ -1,0 +1,41 @@
+﻿@using WebApplication1.Entites;
+@model LoaiGiay
+
+@section header{
+    Sửa Loại Sản Phẩm
+}
+<form asp-action="SuaTheLoai" asp-controller="LoaiSanPham" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <span class="text-success">@ViewBag.ThanhCong</span>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">Mã thể loại</label>
+            <div class="col-md-10">
+                <input asp-for="Id" class="form-control" readonly/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên thể loại</label>
+            <div class="col-md-10">
+                <input asp-for="TenLoai" class="form-control" />
+                <span asp-validation-for="TenLoai" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <a style="cursor:pointer" asp-controller="LoaiSanPham" asp-action="Index">Trở về trang danh sách</a>
+</div>
+<style>
+    .form-control {
+        width: 45%;
+    }
+</style>
+

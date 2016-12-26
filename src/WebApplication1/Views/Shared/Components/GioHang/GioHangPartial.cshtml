@@ -1,0 +1,12 @@
+﻿@if (ViewBag.TongSoLuong == null || ViewBag.TongTien==null)
+{
+    <div class="shopping-item">
+        <a asp-action="TrangGioHang" asp-controller="GioHang">Giỏ hàng: <span class="cart-amunt">0 VNĐ</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">0</span></a>
+    </div>
+}
+else
+{
+<div class="shopping-item">
+    <a asp-action="TrangGioHang" asp-controller="GioHang">Giỏ hàng: <span class="cart-amunt">@String.Format("{0:0,0}", ViewBag.TongTien) VNĐ</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">@ViewBag.TongSoLuong</span></a>
+</div>
+}

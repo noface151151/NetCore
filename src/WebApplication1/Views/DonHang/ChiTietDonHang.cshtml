@@ -1,0 +1,64 @@
+﻿@inject WebApplication1.Interface.IDonHangService DonHangService
+@inject WebApplication1.Interface.ISanPhamService SanPhamService
+@model int
+@using Microsoft.AspNetCore.Http;
+@using WebApplication1.Entites;
+@using Newtonsoft.Json;
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1">
+                </div>
+                <div class="col-md-11">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <form>
+                                <table cellspacing="0" class="shop_table cart">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="product-name">Hình ảnh</th>
+                                            <th class="product-price">Tên sản phẩm</th>
+                                            <th class="product-subtotal">Số lượng</th>
+                                            <th class="product-subtotal">Đơn giá</th>
+                                            <th class="product-subtotal">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in DonHangService.CTDonHang(Model))
+                                        {
+                                            var SanPham = SanPhamService.SanPhamTheoID(item.IdSanPham);
+                                            <tr class="cart_item">
+
+                                                <td class="product-thumbnail">
+                                                    <img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@Url.Content("~/images/" + SanPham.HinhAnh)">
+                                                </td>
+                                                <td class="product-price">
+                                                    <span>@SanPham.TenSanPham</span>
+                                                </td>
+                                                <td class="product-price">
+                                                    <span>@item.SoLuong</span>
+                                                </td>
+                                                <td class="product-subtotal">
+                                                    <span class="amount">@String.Format("{0:0,0}", SanPham.Gia) VNĐ</span>
+                                                </td>
+                                                <td class="product-price">
+                                                    <span class="amount" id="currency-no-fractions">@String.Format("{0:0,0}", SanPham.Gia * item.SoLuong) VNĐ </span>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </form>
+                            @{ 
+                                var sessionTaiKhoan = Context.Session.GetString("taikhoan");
+                                var taikhoan = JsonConvert.DeserializeObject<TaiKhoan>(sessionTaiKhoan);
+                            <a asp-action="DonHangKhachHang" asp-controller="DonHang" asp-route-makh="@taikhoan.Id">Trở về</a>
+                               }
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

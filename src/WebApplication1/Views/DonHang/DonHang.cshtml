@@ -1,0 +1,223 @@
+﻿@model WebApplication1.Entites.DonHangDTO
+@inject WebApplication1.Interface.ISanPhamService SanPhamService
+@using Microsoft.AspNetCore.Http;
+@using WebApplication1.Entites;
+@using Newtonsoft.Json;
+
+@if (ViewBag.ThongBao != null)
+{
+    @section jsFooter{
+        <script>
+            alert("Đặt hàng thành công");
+        </script>
+    }
+}
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+
+
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">Sản phẩm HOT</h2>
+                    @foreach (var item in SanPhamService.GiayNamPartial())
+                    {    <div class="thubmnail-recent">
+                        <img src="@Url.Content("~/images/" + item.HinhAnh)" class="recent-thumb" alt="">
+                        <h2><a asp-action="ChiTietSanPham" asp-controller="SanPham" asp-route-id="@item.Id">@item.TenSanPham</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>@String.Format("{0:0,0}", item.Gia) VNĐ</ins>
+                        </div>
+                    </div>
+                    }
+                    @foreach (var item in SanPhamService.GiayNuPartial())
+                    {    <div class="thubmnail-recent">
+                        <img src="@Url.Content("~/images/" + item.HinhAnh)" class="recent-thumb" alt="">
+                        <h2><a asp-action="ChiTietSanPham" asp-controller="SanPham" asp-route-id="@item.Id">@item.TenSanPham</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>@String.Format("{0:0,0}", item.Gia) VNĐ</ins>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+
+                            @{
+                                var sessionTaiKhoan = Context.Session.GetString("taikhoan");
+                                var SanPhamGioHang = Context.Session.GetString("SessionGioHang");
+
+
+                                if (sessionTaiKhoan == null)
+                                {
+                                    <div class="woocommerce-info">
+                                        Bạn chưa đăng nhập ? <a class="showlogin" style="cursor:pointer" data-toggle="modal" data-target="#myModalDN">Click vào đây để đăng nhập</a>
+                                    </div>
+                                    <div class="modal fade" id="myModalDN" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Đăng nhập</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="login-form-wrap" class="login">
+                                                        <p class="form-row form-row-first">
+                                                            <label for="username">
+                                                                Tên đăng nhập <span class="required">*</span>
+                                                            </label>
+                                                            <input type="text" id="usernameLog" name="username" class="input-text">
+                                                        </p>
+                                                        <p class="form-row form-row-last">
+                                                            <label for="password">
+                                                                Mật khẩu <span class="required">*</span>
+                                                            </label>
+                                                            <input type="password" id="passwordLog" name="password" class="input-text">
+                                                        </p>
+                                                        <div class="clear"></div>
+
+                                                        <p class="form-row">
+                                                            <input type="button" value="Đăng nhập" name="login" class="button" id="btnDangnhap">
+
+                                                        </p>
+
+                                                        <div class="clear"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                else if (SanPhamGioHang != null&& JsonConvert.DeserializeObject<List<GioHang>>(Context.Session.GetString("SessionGioHang")).Count!=0)
+                                {
+                                    var listGioHang = JsonConvert.DeserializeObject<List<GioHang>>(Context.Session.GetString("SessionGioHang"));
+                                    if (listGioHang.Count != 0)
+                                    {
+
+                                    <form asp-action="ThanhToan" asp-controller="DonHang" method="post" class="checkout">
+                                        <div id="customer_details" class="col2-set">
+                                            <div>
+                                                <div class="woocommerce-billing-fields">
+                                                    <h3>Thông tin giao hàng</h3>
+                                                    <p id="billing_first_name_field" class="form-row form-row-first validate-required">
+                                                        <label class="" for="billing_first_name">
+                                                            Tên người nhận <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" id="billing_first_name" class="input-text" asp-for="NguoiNhan">
+                                                        <span asp-validation-for="NguoiNhan" class="text-danger"></span>
+                                                    </p>
+
+                                                    <div class="clear"></div>
+                                                    <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
+                                                        <label class="" for="billing_address_1">
+                                                            Địa chỉ <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" id="billing_address_1" class="input-text" asp-for="DiaChi">
+                                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                                    </p>
+
+                                                    <div class="clear"></div>
+                                                    <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
+                                                        <label class="" for="billing_email">
+                                                            Số điện thoại <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" id="billing_email" class="input-text" asp-for="SoDienThoai">
+                                                        <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                                                    </p>
+
+                                                    <div class="clear"></div>
+                                                    <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
+                                                        <label class="" for="billing_phone">
+                                                            Ngày giao <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" id="datepicker" class="input-text" asp-for="NgayGiao">
+                                                        <span asp-validation-for="NgayGiao" class="text-danger"></span>
+                                                    </p>
+                                                    <div class="clear"></div>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        
+
+                                        <h3 id="order_review_heading">Đặt hàng của bạn</h3>
+                                        <div id="order_review" style="position: relative;">
+                                            
+                                            
+                                               
+                                                <table class="shop_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="product-name">Sản phẩm</th>
+                                                            <th class="product-total">Tổng cộng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in listGioHang)
+                                                        {
+                                                            <tr class="cart_item">
+                                                                <td class="product-name">
+                                                                    @item.TenSanPham <strong class="product-quantity">× @item.SoLuong</strong>
+                                                                </td>
+                                                                <td class="product-total">
+                                                                    <span class="amount">@String.Format("{0:0,0}", item.ThanhTien) VNĐ</span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+
+                                                        <tr class="order-total">
+                                                            <th>Tổng cộng đơn hàng</th>
+
+                                                            <td><strong><span class="amount">@String.Format("{0:0,0}", listGioHang.Sum(x => x.ThanhTien)) VNĐ</span></strong> </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+
+                                            <div id="payment">
+                                                <div class="form-row place-order">
+                                                    <button type="submit" id="place_order" name="woocommerce_checkout_place_order" class="btn btn-success">Đặt hàng</button>
+
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="single-product-area">
+                                        <div class="container">
+                                            <div class="col-md-8">
+                                                <h2 class="text-danger">Bạn không có sản phẩm trong giỏ hàng</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        }
+                                    
+                                }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
